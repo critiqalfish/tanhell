@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
 
     SDL_Window* window;
     #if DEBUG
