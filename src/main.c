@@ -19,6 +19,7 @@ const double Y_MAX = 3;
 const double stretch_step = 0.005;
 const double step = 0.1;
 double stretch = 1;
+int stretch_col = 0;
 double cached_g[161][400];
 double cached_h[161][400];
 
@@ -43,10 +44,8 @@ void cacheFunc(double cached_f[161][400], double (*f)(double)) {
 }
 
 void drawCachedFunc(SDL_Renderer* render, double cached_f[161][400], int thickness, double step) {
-    for (double x = X_MIN; x < X_MAX - step; x += step) {
-        int step_row = round(fabs(x + X_MAX) / step);
-        int stretch_col = round(fabs(stretch - 1) / stretch_step);
-
+    for (int step_row = 0; step_row < 160; step_row++) {
+        double x = step_row * step - 8;
         double y = cached_f[step_row][stretch_col];
         double x_next = x + step;
         double y_next = cached_f[step_row + 1][stretch_col];
@@ -141,6 +140,7 @@ int main(int argc, char* argv[]) {
 
         if (stretch > -1 + stretch_step) stretch -= stretch_step;
         else stretch = 1;
+        stretch_col = round(fabs(stretch - 1) / stretch_step);
 
         #if DEBUG
         fps_frames++;
