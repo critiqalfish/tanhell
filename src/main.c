@@ -96,19 +96,23 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    SDL_Window* window;
     SDL_Init(SDL_INIT_EVERYTHING);
+
+    SDL_Window* window;
     #if DEBUG
     window = SDL_CreateWindow("tanhell", 0, 0, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     #else
     window = SDL_CreateWindowFrom((void*)x_window);
     #endif
+
     SDL_Renderer* render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     int close = 0;
+    #if DEBUG
     int fps_frames = 0;
     int fps_last = SDL_GetTicks();
     int fps = 0;
+    #endif
 
     cacheFunc(cached_g, g);
     cacheFunc(cached_h, h);
@@ -126,7 +130,7 @@ int main(int argc, char* argv[]) {
 
         SDL_SetRenderDrawColor(render, 24, 24, 24, 255);
         SDL_RenderClear(render);
-
+    
         SDL_SetRenderDrawColor(render, 173, 0, 118, 255);
         // drawFunc(render, g, 3, step);
         // drawFunc(render, h, 3, step);
@@ -138,6 +142,7 @@ int main(int argc, char* argv[]) {
         if (stretch > -1 + stretch_step) stretch -= stretch_step;
         else stretch = 1;
 
+        #if DEBUG
         fps_frames++;
         int fps_curr = SDL_GetTicks();
         if (fps_curr - fps_last >= 1000) {
@@ -147,6 +152,7 @@ int main(int argc, char* argv[]) {
 
             printf("fps: %d\n", fps);
         }
+        #endif
 
         SDL_Delay(1000 / 60);
     }
