@@ -6,6 +6,11 @@ CC = gcc
 # Compiler flags
 CFLAGS = -Wall $(shell sdl2-config --cflags)
 
+# Debug flags
+ifdef DEBUG
+CFLAGS += -DDEBUG
+endif
+
 # Source files
 SRC = $(wildcard src/*.c)
 
@@ -29,6 +34,7 @@ $(EXEC): $(OBJ)
 	@echo ""
 	@echo "- Success"
 	@echo "executable: $(EXEC)"
+	
 # Compiling the source files into object files
 $(info - Compiling)
 %.o: src/%.c
@@ -38,5 +44,9 @@ $(info - Compiling)
 clean:
 	rm -f $(EXEC) $(OBJ)
 
+# Debug target
+debug: 
+	$(MAKE) DEBUG=1
+
 # Phony targets
-.PHONY: all clean
+.PHONY: all clean debug
